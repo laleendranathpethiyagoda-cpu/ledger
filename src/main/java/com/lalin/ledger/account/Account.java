@@ -14,4 +14,11 @@ public class Account {
     private int sortCode;
     private BigDecimal balance;
 
+    public void deposit(BigDecimal amount) {
+        balance.add(amount);
+    }
+
+    public void withdraw(BigDecimal amount) {
+        balance.subtract(amount);
+    }
 }
