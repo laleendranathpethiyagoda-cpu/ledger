@@ -13,7 +13,11 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.hibernate.validator.internal.constraintvalidators.bv.time.futureorpresent.FutureOrPresentValidatorForThaiBuddhistDate;
+import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.boot.tomcat.autoconfigure.WebSocketTomcatWebServerFactoryCustomizer;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ser.std.DelegatingSerializer;
 
 
 import java.math.BigDecimal;
@@ -32,6 +36,9 @@ import static java.lang.String.format;
 public class LedgerService {
 
     private final LedgerRepo ledgerRepo;
+    private final FutureOrPresentValidatorForThaiBuddhistDate futureOrPresentValidatorForThaiBuddhistDate;
+    private final WebSocketTomcatWebServerFactoryCustomizer webSocketTomcatWebServerFactoryCustomizer;
+    private final ListableBeanFactory listableBeanFactory;
 
     /**
      * Performs the withdrawal action
@@ -160,5 +167,29 @@ public class LedgerService {
                         ledgerEntry.getDescription()))
                 .toList();
 
+    }
+
+    public void performSessionTransactions(AccountNumber accountNumber, TransferType transferType, BigDecimal amount, UUID transferId) {
+        //check idempotency
+        Account account = getAccount(accountNumber);
+        if (transferType.equals(TransferType.WITHDRAW)) {
+            if (account.getBalance().compareTo(amount) < 0)
+                throw new InsufficientFundsException(format("Insufficient funds for withdrawal %s", account.getAccountNumber().accountNumberValue()));
+
+            LedgerEntry entry = new LedgerEntry(transferId, accountNumber, amount, transferType, LocalDateTime.now(), " deposit");
+           ledgerRepo.accountTransferSession().putIfAbsent(transferId.toString(), (k ) -> {
+               var lst=   ArrayList<LedgerEntry>().add(entry);
+               return lst;
+           })
+        }
+        else {
+            account.getBalance().add(amount);
+        }
+        ledgerRepo.getAccountTransferSession().add(account);
+    }
+
+    public void rollBack(AccountNumber accountNumber) {
+        var list = ledgerRepo.getAccountTransferSession();
+        var ac = list.stream().anyMatch( )
     }
 }

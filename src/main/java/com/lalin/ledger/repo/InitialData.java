@@ -21,6 +21,7 @@ public final class InitialData {
 
     public static ConcurrentHashMap<String, Account> accounts = new ConcurrentHashMap<>();
     public static ConcurrentHashMap<String, List<LedgerEntry>> tinyLedger = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, List<LedgerEntry>> tempLedger = new ConcurrentHashMap<>();
     {
         var accountA = new Account(new AccountNumber("26082955"), 123456, BigDecimal.valueOf(135.69));
         var accountB = new Account(new AccountNumber("26082956"), 123456, BigDecimal.valueOf(135.70));
@@ -39,6 +40,9 @@ public final class InitialData {
         return tinyLedger;
     }
 
+    public ConcurrentHashMap<String, List<LedgerEntry>> getTempLedger() {
+        return tempLedger;
+    }
 
 }
 
