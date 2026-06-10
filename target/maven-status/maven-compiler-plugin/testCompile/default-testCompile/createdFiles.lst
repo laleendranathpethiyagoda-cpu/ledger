@@ -1,2 +1,4 @@
 com/lalin/ledger/LedgerApplicationTests.class
 com/lalin/ledger/TestLedgerApplication.class
+com/lalin/ledger/controller/LedgerControllerTest.class
+com/lalin/ledger/service/LedgerServiceTest.class
