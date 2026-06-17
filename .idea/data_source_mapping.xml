@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V1__customer_checking_account_transaction_type_transaction_categories_tables.sql" value="19ae7478-b2c6-491b-a37f-a533ccb61fec" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/19ae7478-b2c6-491b-a37f-a533ccb61fec/console.sql" value="19ae7478-b2c6-491b-a37f-a533ccb61fec" />
+  </component>
+</project>

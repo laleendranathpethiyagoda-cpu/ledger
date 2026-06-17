@@ -11,6 +11,18 @@ In particular, the following features:
 
 >- View transaction history
 
+## The Chart of Accounts for this application is as follows:
+Accounting Sequence
+
+A chart of accounts (COA) lists all accounts in a company’s general ledger.
+It helps organize financial data and supports financial reporting.
+Each account typically has a number, name, and description.
+Companies can customize their COA, but should keep it consistent over time.
+
+>- Accounting entries are made to the general ledger
+>- The general ledger feeds into the trial balance
+>- The trial balance feeds into the financial statement.
+
 ## The following assumptions are made when implementing this solution:
 
 >-Transfers (Withdrawals and Deposits) are immutable. They are never modified once they are successfully created.
