@@ -1,6 +1,6 @@
---CREATE TYPE reporting_type AS ENUM ('BALANCE_SHEET', 'PROFIT_LOSS');
---CREATE TYPE account_type AS ENUM ('Asset', 'Liability', 'Equity', 'Income', 'Expense');
---CREATE TYPE account_status AS ENUM ('Active', 'Dormant', 'Closed', 'Blocked', 'Frozen');
+CREATE TYPE reporting_type AS ENUM ('BALANCE_SHEET', 'PROFIT_LOSS');
+CREATE TYPE account_type AS ENUM ('Asset', 'Liability', 'Equity', 'Income', 'Expense');
+CREATE TYPE account_status AS ENUM ('Active', 'Dormant', 'Closed', 'Blocked', 'Frozen');
 CREATE TYPE cat_type AS ENUM (
     'SALARY',
     'OTHER_INCOME',
@@ -15,12 +15,12 @@ CREATE TYPE cat_type AS ENUM (
 );
 
 CREATE TABLE IF NOT EXISTS chart_of_accounts (
-    accountCode VARCHAR(10) PRIMARY KEY,
+    accountCode VARCHAR(50) PRIMARY KEY,
     accountName VARCHAR(50) NOT NULL UNIQUE,
     accountType account_type NOT NULL,
     description VARCHAR(255),
     isLeaf BOOLEAN NOT NULL,
-    parentCode VARCHAR(10) REFERENCES chart_of_accounts(accountCode),
+    parentCode VARCHAR(50) REFERENCES chart_of_accounts(accountCode),
     reportingType reporting_type,
     createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt TIMESTAMP,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     sortingCode INTEGER NOT NULL,
     iban TEXT NOT NULL,
     accountName VARCHAR(255) NOT NULL,
-    parentCode VARCHAR(10) REFERENCES chart_of_accounts(accountCode),
+    parentCode VARCHAR(50) REFERENCES chart_of_accounts(accountCode),
     balance NUMERIC(10,2) NOT NULL,
     accountStatus account_status NOT NULL,
     createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS loan_account (
 );
 
 CREATE TABLE IF NOT EXISTS transaction_category (
-    categoryCode VARCHAR(10) PRIMARY KEY,
+    categoryCode VARCHAR(50) PRIMARY KEY,
     categoryName VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(255),
     categoryType cat_type NOT NULL,
