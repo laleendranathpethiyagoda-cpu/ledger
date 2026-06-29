@@ -2,7 +2,7 @@
 
 ## Introduction
 This repo consists of te technical detail outlining
-a bank ledger and how it manages transactions. 
+a core bank ledger and how it manages transactions. 
 In particular, the following features:
 
 >- Ability to record money movements (ie: deposits and withdrawals)
@@ -19,6 +19,16 @@ It helps organize financial data and supports financial reporting.
 Each account typically has a number, name, and description.
 Companies can customize their COA, but should keep it consistent over time.
 
+## Account Number and Sort Code
+
+An account number is a unique 8 digit number that identifies your bank account.
+
+Your bank account number helps banks direct transactions to the correct customer account. 
+If you have multiple bank accounts, each account will have a different account number.
+
+A sort code is a 6 digit number that identifies your bank. It can vary depending on the specific 
+branch in which you opened your account. 
+>- 
 >- Accounting entries are made to the general ledger
 >- The general ledger feeds into the trial balance
 >- The trial balance feeds into the financial statement.
