@@ -56,7 +56,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
-            <version>4.0.6</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -84,12 +83,6 @@
             <version>4.0.6</version>
             <scope>compile</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq</artifactId>
-            <version>3.21.6</version>
-            <scope>compile</scope>
-        </dependency>-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
@@ -98,12 +91,14 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>6.2.7</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-            <version>6.0.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -202,7 +197,6 @@
         <plugin>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
-               <!-- <version>${org.jooq.version}</version>-->
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -214,7 +208,7 @@
                                 <driver>${spring.datasource.driver-class-name}</driver>
                                 <url>${spring.datasource.url}</url>
                                 <user>${spring.datasource.username}</user>
-                                <password>corebankpw</password>
+                                <password>${spring.datasource.password}</password>
                             </jdbc>
                             <generator>
                                 <database>

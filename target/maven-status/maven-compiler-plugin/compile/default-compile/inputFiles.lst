@@ -7,6 +7,7 @@
 /Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/controller/ClientController.java
 /Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/controller/LedgerController.java
 /Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/dto/BalanceResponse.java
+/Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/dto/Client.java
 /Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/dto/ErrorResponse.java
 /Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/dto/Transaction.java
 /Users/lalinpethiyagoda/IdeaProjects/ledger_core_bank/src/main/java/com/lalin/ledger/dto/TransferRequest.java

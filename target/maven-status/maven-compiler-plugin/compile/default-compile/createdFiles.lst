@@ -42,6 +42,7 @@ com/lalin/ledger/jooq/pg/enums/AccountStatus.class
 com/lalin/ledger/jooq/pg/tables/LoanAccount$LoanAccountPath.class
 com/lalin/ledger/jooq/pg/Public.class
 com/lalin/ledger/repo/InitialData.class
+com/lalin/ledger/dto/Client.class
 com/lalin/ledger/jooq/pg/enums/CatType.class
 com/lalin/ledger/jooq/pg/enums/AccountType.class
 com/lalin/ledger/dto/TransferResponse.class

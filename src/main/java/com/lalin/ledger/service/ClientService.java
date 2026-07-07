@@ -1,10 +1,10 @@
 package com.lalin.ledger.service;
 
 import com.lalin.ledger.repo.ClientRepo;
-import com.lalin.ledger.repo.LedgerRepo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -12,4 +12,9 @@ import org.springframework.stereotype.Service;
 public class ClientService {
 
     private final ClientRepo clientRepo;
+
+    @Transactional
+    public String createNewClient(String clientName, String email, String description, String contactPerson) {
+        return clientRepo.createNewClient(clientName, email, description, contactPerson).toString();
+    }
 }
