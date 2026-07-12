@@ -8,37 +8,95 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Environment name'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - stage
+          - prod
+      dbHost:
+        type: string
+        description: 'Database host address'
+        required: true
+        default: 'localhost'
+      dbPort:
+        type: string
+        description: 'Database host port number, i.e. MySQL 3306, PostgreSQL 5432'
+        required: true
+      dbType:
+        description: 'Database type (MySQL/PostgreSQL)'
+        required: true
+        default: 'postgresql'
+        type: choice
+        options:
+          - postgresql
+          - mysql
+
 env:
   MAVEN_VERSION: maven:3.8.4-openjdk-17
+  FLYWAY_VERSION: 9.16.3
+  DB_NAME: 'corebankdb'
 
 jobs:
-  prep-image:
-    runs-on: ubuntu-latest
-    container: maven:3.8.4-openjdk-17-slim
-    steps:
-      - run: echo "null"
-    outputs:
-      image: ${{ env.MAVEN_VERSION }}
-
-    services:
-      postgres:
-        image: postgres:14.2
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_URL: ${{ secrets.DB_URL }}
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
   build:
-    name: Build and Test with cache
     runs-on: ubuntu-latest
-    needs: [prep-image]
-    container:
-      image: ${{ needs.prep-image.outputs.image }}
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: ${{ secrets.USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
     steps:
-      - name: Echo output
-        run: echo ${{ needs.prep-image.outputs.image }}
+      - uses: actions/checkout@v3
+
+      - name: Setup Flyway
+        run: |
+          wget -qO- https://download.red-gate.com/maven/release/org/flywaydb/enterprise/flyway-commandline/${{ env.FLYWAY_VERSION }}/flyway-commandline-${{ env.FLYWAY_VERSION }}-linux-x64.tar.gz | tar -xvz && sudo ln -s `pwd`/flyway-${{ env.FLYWAY_VERSION }}/flyway /usr/local/bin 
+
+      - name: Run Flyway Migrations
+        env:
+          FLYWAY_URL: ${{ secrets.URL }}
+          FLYWAY_USER: ${{ secrets.USERNAME }}
+          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          FLYWAY_SCHEMAS: flyway,public
+        run: |
+          flyway migrate
+
+      - name: Flyway info and write result to file
+        env:
+          FLYWAY_URL: ${{ secrets.URL }}
+          FLYWAY_USER: ${{ secrets.USERNAME }}
+          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          FLYWAY_SCHEMAS: flyway,public
+        run: |
+          flyway info > ./migration-status/$(date -u +"%Y-%m-%d|%H:%M:%S")-${{ inputs.env }}.txt
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: './migration-status/*-${{ inputs.env }}.txt'
 
       - name: Checkout code
         uses: actions/checkout@v4.0.0
