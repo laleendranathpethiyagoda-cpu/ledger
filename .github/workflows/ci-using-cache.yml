@@ -83,6 +83,7 @@ jobs:
           FLYWAY_SCHEMAS: flyway,public
         run: |
           flyway migrate
+          flyway info
 
       - name: Checkout code
         uses: actions/checkout@v4.0.0
