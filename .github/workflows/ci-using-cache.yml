@@ -8,11 +8,18 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+env:
+  MAVEN_VERSION: maven:3.8.4-jdk-17
 
 jobs:
-  container-job:
+  prep-image:
     runs-on: ubuntu-latest
     container: maven:3.8.4-openjdk-17-slim
+    steps:
+      - run: echo "null"
+    outputs:
+      image: ${{ env.MAVEN_VERSION }}
+
     services:
       postgres:
         image: postgres:14.2
@@ -26,8 +33,13 @@ jobs:
   build:
     name: Build and Test with cache
     runs-on: ubuntu-latest
-
+    needs: [prep-image]
+    container:
+      image: ${{ needs.prep-image.outputs.image }}
     steps:
+      - name: Echo output
+        run: echo ${{ needs.prep-image.outputs.image }}
+
       - name: Checkout code
         uses: actions/checkout@v4.0.0
 
