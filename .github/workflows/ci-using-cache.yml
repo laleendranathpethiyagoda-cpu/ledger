@@ -84,20 +84,6 @@ jobs:
         run: |
           flyway migrate
 
-      - name: Flyway info and write result to file
-        env:
-          FLYWAY_URL: ${{ secrets.URL }}
-          FLYWAY_USER: ${{ secrets.USERNAME }}
-          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          FLYWAY_SCHEMAS: flyway,public
-        run: |
-          flyway info > ./migration-status/$(date -u +"%Y-%m-%d|%H:%M:%S")-${{ inputs.env }}.txt
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: './migration-status/*-${{ inputs.env }}.txt'
-
       - name: Checkout code
         uses: actions/checkout@v4.0.0
 
