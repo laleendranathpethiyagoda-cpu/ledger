@@ -10,6 +10,12 @@ on:
     branches: [ main ]
 
 jobs:
+  call-workflow:
+    uses: ./.github/workflows/flyway-migrations.yml@v1
+    with:
+      dbPort: '5432'
+      dbType: 'postgresql'
+
   build:
     name: Build and Test with cache
     runs-on: ubuntu-latest
@@ -24,6 +30,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+
       - name: Check Java version
         run: java -version
 
