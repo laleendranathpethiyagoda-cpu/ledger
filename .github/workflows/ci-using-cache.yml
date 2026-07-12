@@ -1,0 +1,61 @@
+# ==========================
+# CI Using GitHub Cache
+# ==========================
+name: CI Using GitHub Cache
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build and Test with cache
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.0.0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4.0.0
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Check Java version
+        run: java -version
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4.0.0
+        id: cache
+        with:
+          path: ~/.m2/repository
+          #Using GitHub Actions syntax to cache the maven packages
+          # ${{ runner.os }} resolves to the operating system of the runner, such as:
+          #Linux
+          #Windows
+          #macOS
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      # If the cache was found, steps.cache.outputs.cache-hit will usually be "true".
+      #If the cache was not found, it will be "false" or empty depending on the situation.
+      - name: Cache Status
+        run: | 
+                echo "Cache Status:" 
+                if [ "${{ steps.cache.outputs.cache-hit }}" == "true" ]; then 
+                  echo " Cache hit" 
+                else 
+                  echo "Cache miss" 
+                fi
+
+      - name: Install Dependencies
+        run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+      - name : Run Tests
+        run: mvn test
+
+      - name: Build with Maven
+        run: mvn package -B -V
