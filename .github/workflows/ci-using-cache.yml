@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ main ]
 env:
-  MAVEN_VERSION: maven:3.8.4-jdk-17
+  MAVEN_VERSION: maven:3.8.4-openjdk-17
 
 jobs:
   prep-image:
