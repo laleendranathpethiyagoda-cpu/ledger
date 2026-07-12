@@ -10,12 +10,19 @@ on:
     branches: [ main ]
 
 jobs:
-  call-workflow:
-    uses: ./.github/workflows/flyway-migrations.yml
-    with:
-      dbPort: '5432'
-      dbType: 'postgresql'
-
+  container-job:
+    runs-on: ubuntu-latest
+    container: maven:3.8.4-openjdk-17-slim
+    services:
+      postgres:
+        image: postgres:14.2
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URL: ${{ secrets.DB_URL }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
   build:
     name: Build and Test with cache
     runs-on: ubuntu-latest
