@@ -11,7 +11,7 @@ on:
 
 jobs:
   call-workflow:
-    uses: ./.github/workflows/flyway-migrations.yml@v1
+    uses: ./.github/workflows/flyway-migrations.yml
     with:
       dbPort: '5432'
       dbType: 'postgresql'
