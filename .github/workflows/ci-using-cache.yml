@@ -77,9 +77,9 @@ jobs:
 
       - name: Run Flyway Migrations
         env:
-          FLYWAY_URL: ${{ secrets.URL }}
-          FLYWAY_USER: ${{ secrets.USERNAME }}
-          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          FLYWAY_URL: 'jdbc:postgresql://localhost:5432/corebankdb'
+          FLYWAY_USER: 'postgres'
+          FLYWAY_PASSWORD: 'corebankpw'
           FLYWAY_SCHEMAS: flyway,public
         run: |
           flyway migrate
