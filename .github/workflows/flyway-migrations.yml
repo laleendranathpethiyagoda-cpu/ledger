@@ -33,7 +33,7 @@ on:
 
   env:
     FLYWAY_VERSION: 9.16.3
-    DB_NAME: ${{ secrets.DB_NAME }}
+    DB_NAME: 'corebankdb'
 
 jobs:
   build:
