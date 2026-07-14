@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class ClientController {
 
-    private final ClientService clientService;
+  private final ClientService clientService;
 
-    @RequestMapping("/create")
-    public ResponseEntity<String> createClient(@Valid @RequestBody Client client) {
-        var response =  clientService.createNewClient(client.clientName(),
-                client.email(), client.description(), client.contactPerson());
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(response);
-    }
+  @RequestMapping("/create")
+  public ResponseEntity<String> createClient(@Valid @RequestBody Client client) {
+    var response = clientService.createNewClient(client.clientName(),
+        client.email(), client.description(), client.contactPerson());
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(response);
+  }
 }

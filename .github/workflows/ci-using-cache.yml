@@ -114,18 +114,18 @@ jobs:
       # If the cache was found, steps.cache.outputs.cache-hit will usually be "true".
       #If the cache was not found, it will be "false" or empty depending on the situation.
       - name: Cache Status
-        run: | 
-                echo "Cache Status:" 
-                if [ "${{ steps.cache.outputs.cache-hit }}" == "true" ]; then 
-                  echo " Cache hit" 
-                else 
-                  echo "Cache miss" 
-                fi
+        run: |
+          echo "Cache Status:" 
+          if [ "${{ steps.cache.outputs.cache-hit }}" == "true" ]; then 
+            echo " Cache hit" 
+          else 
+            echo "Cache miss" 
+          fi
 
       - name: Install Dependencies
         run: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-      - name : Run Tests
+      - name: Run Tests
         run: mvn test
 
       - name: Build with Maven

@@ -11,10 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Getter
 public class ClientService {
 
-    private final ClientRepo clientRepo;
+  private final ClientRepo clientRepo;
 
-    @Transactional
-    public String createNewClient(String clientName, String email, String description, String contactPerson) {
-        return clientRepo.createNewClient(clientName, email, description, contactPerson).toString();
-    }
+  @Transactional
+  public String createNewClient(String clientName, String email, String description,
+      String contactPerson) {
+    return clientRepo.createNewClient(clientName, email, description, contactPerson).toString();
+  }
 }
